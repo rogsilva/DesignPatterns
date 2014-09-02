@@ -43,6 +43,14 @@ abstract class AbstractElement implements ElementsInterface
         return $tag;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
 
     /**
      * @param mixed $attributes

@@ -15,4 +15,6 @@ interface FormInterface
 
     public function render();
 
+    public function createField($name);
+
 } 

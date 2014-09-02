@@ -2,59 +2,69 @@
 //Chamada do autoload
 require_once "../autoload.php";
 
-$form = new \CODE\Form\Form();
-$form->setAttributes(array(
-    "action" => "#",
-    "method" => "post",
-    "id" => "myForm",
-    "class" => "form form-horizontal"
-));
+$request = new \CODE\Request\Request();
+$validator = new \CODE\Form\Validator\Validator($request);
+//Form Protótipo
+$form =  new \CODE\Form\Form($validator);
 
-$nome = new \CODE\Form\Elements\Text("nome");
-$nome->setAttributes(array("id"=>"nome"))
-    ->setLabel("Nome");
-$form->add($nome);
+//Formulário de Contato
+$formContato = clone $form;
 
-$email = new \CODE\Form\Elements\Email("email");
-$email->setAttributes(array("id"=>"email"))
-    ->setLabel("E-mail");
-$form->add($email);
+$nome = new \CODE\Form\Elements\Text('nome');
+$nome->setLabel('Nome');
+$formContato->add($nome);
 
-$assunto = new \CODE\Form\Elements\Text("assunto");
-$assunto->setAttributes(array("id"=>"assunto"))
-    ->setLabel("Assunto");
-$form->add($assunto);
+$email = new \CODE\Form\Elements\Email('email');
+$email->setLabel('Email');
+$formContato->add($email);
 
-$deptoOptions = array( 1 => "Suporte", 2 => "Finanças", 3 => "Cancelamento");
-$departamento = new \CODE\Form\Elements\Select("departamento", $deptoOptions);
-$departamento->setAttributes(array("id"=>"departamento"))
-    ->setLabel("Departamento");
-$form->add($departamento);
+$assunto = new CODE\Form\Elements\Text('assunto');
+$assunto->setLabel('Assunto');
+$formContato->add($assunto);
 
-$news = new \CODE\Form\Elements\Checkbox("news", "Sim", 1);
-$news->setAttributes(array("id"=>"news"))
-    ->setLabel("Assinar Newsletter");
-$form->add($news);
+$mensagem = new CODE\Form\Elements\TextArea('mensagem');
+$mensagem->setLabel('Mensagem');
+$formContato->add($mensagem);
 
-$tipo1 = new \CODE\Form\Elements\Radio("tipo", "CLT", 1);
-$tipo1->setAttributes(array("id"=>"tipo1", 'checked'=> true))
-    ->setLabel("Tipo de Profissional");
-$form->add($tipo1);
+$submit = new CODE\Form\Elements\Submit('enviar', 'Enviar');
+$formContato->add($submit);
 
-$tipo2 = new \CODE\Form\Elements\Radio("tipo", "PJ", 2);
-$tipo2->setAttributes(array("id"=>"tipo2"));
-$form->add($tipo2);
+//Formulário de Cadastro newsletter
+$formNews = clone $form;
+
+$email = new \CODE\Form\Elements\Email('email');
+$email->setLabel('Email');
+$formNews->add($email);
+
+$submit = new CODE\Form\Elements\Submit('enviar', 'Enviar');
+$formNews->add($submit);
 
 
-$conteudo = new \CODE\Form\Elements\TextArea("conteudo");
-$conteudo->setAttributes(array("id"=>"conteudo", "rows" => "5"))
-    ->setLabel("Conteúdo");
-$form->add($conteudo);
+//Formulário de busca
+$formSearch = clone $form;
+
+$nome = new \CODE\Form\Elements\Text('term');
+$nome->setAttributes(array('placeholder'=>'O que você está procurando?'));
+$formSearch->add($nome);
+
+$submit = new CODE\Form\Elements\Submit('buscar', 'Buscar');
+$formSearch->add($submit);
 
 
-$submit = new \CODE\Form\Elements\Submit("submit", "Enviar");
-$submit->setAttributes(array("id"=>"submit"));
-$form->add($submit);
+//Formulário de Login
+$formLogin = clone $form;
+
+$email = new \CODE\Form\Elements\Email('email');
+$email->setLabel('Email');
+$formLogin->add($email);
+
+$senha = new \CODE\Form\Elements\Password('senha');
+$senha->setLabel('Senha');
+$formLogin->add($senha);
+
+$submit = new CODE\Form\Elements\Submit('enviar', 'Buscar');
+$formLogin->add($submit);
+
 
 
 
@@ -114,12 +124,38 @@ $form->add($submit);
 
 
     <div class="row">
-        <div class="col-lg-12">
-            <?php echo $form->openTag();?>
+        <div class="col-lg-6">
+            <h3>Form Contato</h3>
+            <?php echo $formContato->openTag();?>
 
-            <?php echo $form->render();?>
+            <?php echo $formContato->render();?>
 
-            <?php echo $form->closeTag();?>
+            <?php echo $formContato->closeTag();?>
+        </div>
+        <div class="col-lg-6">
+            <h3>Newsletter</h3>
+            <?php echo $formNews->openTag();?>
+            <?php echo $formNews->createField('email');?>
+            <?php echo $formNews->createField('enviar');?>
+            <?php echo $formNews->closeTag();?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Busca</h3>
+            <?php echo $formSearch->openTag();?>
+            <?php echo $formSearch->createField('term');?>
+            <?php echo $formSearch->createField('buscar');?>
+            <?php echo $formSearch->closeTag();?>
+        </div>
+        <div class="col-lg-6">
+            <h3>Login</h3>
+            <?php echo $formLogin->openTag();?>
+            <?php echo $formLogin->createField('email');?>
+            <?php echo $formLogin->createField('senha');?>
+            <?php echo $formLogin->createField('enviar');?>
+            <?php echo $formLogin->closeTag();?>
         </div>
     </div>
 

@@ -5,14 +5,18 @@ namespace CODE\Form;
 use CODE\Form\Elements\AbstractElement;
 use CODE\Form\Interfaces\FormInterface;
 
+use CODE\Form\Validator\Validator;
+
 class Form implements FormInterface
 {
     private $attributes;
-    private $elements;
+    private $elements = [];
+    private $validator;
 
-    public function __construct($attributes = array())
+    public function __construct(Validator $validator, $attributes = array())
     {
         $this->attributes = $attributes;
+        $this->validator = $validator;
     }
 
     public function openTag()
@@ -40,7 +44,7 @@ class Form implements FormInterface
 
     public function add(AbstractElement $element)
     {
-        $this->elements[] = $element->mount();
+        $this->elements[$element->getName()] = $element;
     }
 
     public function render()
@@ -48,12 +52,18 @@ class Form implements FormInterface
         if(count($this->elements > 0)){
             $elementList = "";
             foreach($this->elements as $element){
-                $elementList.= $element;
+                $elementList.= $element->mount();
             }
             return $elementList;
         }
 
         return false;
+    }
+
+
+    public function createField($name)
+    {
+        return $this->elements[$name]->mount();
     }
 
 
@@ -74,4 +84,22 @@ class Form implements FormInterface
         return $this->attributes;
     }
 
-} 
+    /**
+     * @param mixed $elements
+     */
+    public function setElements(array $elements)
+    {
+        $this->elements = $elements;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
+
+}

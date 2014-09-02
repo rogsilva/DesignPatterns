@@ -1,20 +1,20 @@
 
 
-#myForm {
+form {
     width: 50%;
     display: table;
 }
 
-#myForm input[type="text"], #myForm input[type="email"], #myForm label, #myForm textarea, #myForm select{
+form input[type="text"], form input[type="email"], form input[type="password"], form label, form textarea, form select{
     width: 100%;
     float: left;
     margin: 5px 0;
 }
 
-#myForm span, #myForm input[type="submit"]{
+form span, form input[type="submit"]{
     float: left;
 }
-#myForm span{
+form span{
     margin-right: 10px;
 }
 
