@@ -7,63 +7,36 @@ $validator = new \CODE\Form\Validator\Validator($request);
 //Form Protótipo
 $form =  new \CODE\Form\Form($validator);
 
-//Formulário de Contato
-$formContato = clone $form;
+//Formulário de Cadastro
+$formCadastro = clone $form;
+
+$fieldset1 = new \CODE\Form\Elements\Fieldset('field1', 'Informações Pessoais');
 
 $nome = new \CODE\Form\Elements\Text('nome');
 $nome->setLabel('Nome');
-$formContato->add($nome);
+$fieldset1->add($nome);
 
 $email = new \CODE\Form\Elements\Email('email');
 $email->setLabel('Email');
-$formContato->add($email);
+$fieldset1->add($email);
 
-$assunto = new CODE\Form\Elements\Text('assunto');
-$assunto->setLabel('Assunto');
-$formContato->add($assunto);
+$formCadastro->add($fieldset1);
 
-$mensagem = new CODE\Form\Elements\TextArea('mensagem');
-$mensagem->setLabel('Mensagem');
-$formContato->add($mensagem);
+$fieldset2 = new \CODE\Form\Elements\Fieldset('field2', 'Informações de Acesso');
+
+$login = new CODE\Form\Elements\Text('login');
+$login->setLabel('Login');
+$fieldset2->add($login);
+
+$pass = new CODE\Form\Elements\Password('senha');
+$pass->setLabel('Senha');
+$fieldset2->add($pass);
+
+$formCadastro->add($fieldset2);
 
 $submit = new CODE\Form\Elements\Submit('enviar', 'Enviar');
-$formContato->add($submit);
+$formCadastro->add($submit);
 
-//Formulário de Cadastro newsletter
-$formNews = clone $form;
-
-$email = new \CODE\Form\Elements\Email('email');
-$email->setLabel('Email');
-$formNews->add($email);
-
-$submit = new CODE\Form\Elements\Submit('enviar', 'Enviar');
-$formNews->add($submit);
-
-
-//Formulário de busca
-$formSearch = clone $form;
-
-$nome = new \CODE\Form\Elements\Text('term');
-$nome->setAttributes(array('placeholder'=>'O que você está procurando?'));
-$formSearch->add($nome);
-
-$submit = new CODE\Form\Elements\Submit('buscar', 'Buscar');
-$formSearch->add($submit);
-
-
-//Formulário de Login
-$formLogin = clone $form;
-
-$email = new \CODE\Form\Elements\Email('email');
-$email->setLabel('Email');
-$formLogin->add($email);
-
-$senha = new \CODE\Form\Elements\Password('senha');
-$senha->setLabel('Senha');
-$formLogin->add($senha);
-
-$submit = new CODE\Form\Elements\Submit('enviar', 'Buscar');
-$formLogin->add($submit);
 
 
 
@@ -125,37 +98,16 @@ $formLogin->add($submit);
 
     <div class="row">
         <div class="col-lg-6">
-            <h3>Form Contato</h3>
-            <?php echo $formContato->openTag();?>
+            <h3>Form Cadastro</h3>
+            <?php echo $formCadastro->openTag();?>
 
-            <?php echo $formContato->render();?>
+            <?php echo $formCadastro->createField('field1');?>
 
-            <?php echo $formContato->closeTag();?>
-        </div>
-        <div class="col-lg-6">
-            <h3>Newsletter</h3>
-            <?php echo $formNews->openTag();?>
-            <?php echo $formNews->createField('email');?>
-            <?php echo $formNews->createField('enviar');?>
-            <?php echo $formNews->closeTag();?>
-        </div>
-    </div>
+            <?php echo $formCadastro->createField('field2');?>
 
-    <div class="row">
-        <div class="col-lg-6">
-            <h3>Busca</h3>
-            <?php echo $formSearch->openTag();?>
-            <?php echo $formSearch->createField('term');?>
-            <?php echo $formSearch->createField('buscar');?>
-            <?php echo $formSearch->closeTag();?>
-        </div>
-        <div class="col-lg-6">
-            <h3>Login</h3>
-            <?php echo $formLogin->openTag();?>
-            <?php echo $formLogin->createField('email');?>
-            <?php echo $formLogin->createField('senha');?>
-            <?php echo $formLogin->createField('enviar');?>
-            <?php echo $formLogin->closeTag();?>
+            <?php echo $formCadastro->createField('enviar');?>
+
+            <?php echo $formCadastro->closeTag();?>
         </div>
     </div>
 

@@ -38,4 +38,8 @@ class Radio extends AbstractElement
 
         return $tag;
     }
+
+    public function add(AbstractElement $element){
+        throw new \InvalidArgumentException('Não é possível adicionar elementos neste tipo de elemento!');
+    }
 } 

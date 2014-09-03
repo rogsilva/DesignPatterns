@@ -70,6 +70,6 @@ abstract class AbstractElement implements ElementsInterface
         return $this;
     }
 
-
+    abstract public function add(AbstractElement $element);
 
 } 
