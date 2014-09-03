@@ -8,14 +8,15 @@
 
 namespace CODE\Form\Validator;
 
-use CODE\Request\Request;
+use CODE\Form\Interfaces\ValidatorInterface;
+use CODE\Request\Interfaces\RequestInterface;
 
-class Validator
+class Validator implements ValidatorInterface
 {
 
     private $request;
 
-    public function __construct(Request $request)
+    public function __construct(RequestInterface $request)
     {
         $this->request = $request;
     }

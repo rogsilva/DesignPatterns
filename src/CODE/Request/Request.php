@@ -8,8 +8,9 @@
 
 namespace CODE\Request;
 
+use CODE\Request\Interfaces\RequestInterface;
 
-class Request
+class Request implements  RequestInterface
 {
 
     public function __construct()
