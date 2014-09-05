@@ -5,7 +5,7 @@ namespace CODE\Form;
 use CODE\Form\Elements\AbstractElement;
 use CODE\Form\Interfaces\FormInterface;
 
-use CODE\Form\Validator\Validator;
+use CODE\Form\Interfaces\ValidatorInterface;
 
 class Form implements FormInterface
 {
@@ -13,7 +13,7 @@ class Form implements FormInterface
     private $elements = [];
     private $validator;
 
-    public function __construct(Validator $validator, $attributes = array())
+    public function __construct(ValidatorInterface $validator, $attributes = array())
     {
         $this->attributes = $attributes;
         $this->validator = $validator;
