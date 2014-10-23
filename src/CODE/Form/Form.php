@@ -102,4 +102,38 @@ class Form implements FormInterface
     }
 
 
+    public function populate(Array $dados)
+    {
+        foreach( $this->elements as $element){
+            //var_dump($element);
+            if( method_exists( $element , 'getChilds' ) && count($element->getChilds() > 0)){
+                foreach($element->getChilds() as $child){
+                    if(array_key_exists($child->getName(), $dados))
+                        $child->setValue($dados[$child->getName()]);
+                }
+            }else{
+                if(array_key_exists($element->getName(), $dados))
+                    $element->setValue($dados[$element->getName()]);
+            }
+        }
+    }
+
+    /**
+     * @param \CODE\Form\Interfaces\ValidatorInterface $validator
+     */
+    public function setValidator($validator)
+    {
+        $this->validator = $validator;
+        return $this;
+    }
+
+    /**
+     * @return \CODE\Form\Interfaces\ValidatorInterface
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+
 }

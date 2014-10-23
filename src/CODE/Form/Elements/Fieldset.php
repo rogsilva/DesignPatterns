@@ -43,4 +43,8 @@ class Fieldset extends AbstractElement
         $this->childs[] = $element;
         return $this;
     }
+
+    public function getChilds(){
+        return $this->childs;
+    }
 } 

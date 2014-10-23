@@ -11,4 +11,6 @@ namespace CODE\Form\Interfaces;
 
 interface ValidatorInterface {
 
-} 
+    public function validate();
+    public function addRule(Array $rule);
+}

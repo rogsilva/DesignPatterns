@@ -39,7 +39,6 @@ abstract class AbstractElement implements ElementsInterface
 
         }
         $tag.=">\n";
-
         return $tag;
     }
 
@@ -69,6 +68,35 @@ abstract class AbstractElement implements ElementsInterface
         $this->label = $label;
         return $this;
     }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param mixed $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
+
+
 
     abstract public function add(AbstractElement $element);
 

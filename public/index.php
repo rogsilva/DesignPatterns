@@ -2,44 +2,97 @@
 //Chamada do autoload
 require_once "../autoload.php";
 
-$request = new \CODE\Request\Request();
-$validator = new \CODE\Form\Validator\Validator($request);
+//Pega a Conexão PDO
+$pdo = new \CODE\DB\Connection();
+//Inicializa as fixtures
+(new \CODE\Fixtures\Fixtures())->init($pdo->get());
+
+//Seleciona os options do select
+$stmt = $pdo->get()->prepare('select * from categorias');
+$stmt->execute();
+$options = [''=>''];
+foreach($stmt->fetchAll(PDO::FETCH_OBJ) as $categoria){
+    $options[$categoria->id] = $categoria->nome;
+}
+
+
+
+$validator = new \CODE\Form\Validator\Validator();
 //Form Protótipo
 $form =  new \CODE\Form\Form($validator);
 
 //Formulário de Cadastro
 $formCadastro = clone $form;
 
-$fieldset1 = new \CODE\Form\Elements\Fieldset('field1', 'Informações Pessoais');
+$fieldset1 = new \CODE\Form\Elements\Fieldset('field1', 'Formulário de Cadastro');
 
 $nome = new \CODE\Form\Elements\Text('nome');
 $nome->setLabel('Nome');
 $fieldset1->add($nome);
 
-$email = new \CODE\Form\Elements\Email('email');
-$email->setLabel('Email');
-$fieldset1->add($email);
+$valor = new \CODE\Form\Elements\Text('valor');
+$valor->setLabel('Valor');
+$fieldset1->add($valor);
+
+$descricao = new \CODE\Form\Elements\Text('descricao');
+$descricao->setLabel('Descrição');
+$fieldset1->add($descricao);
+
+$categoria = new \CODE\Form\Elements\Select('categoria', $options);
+$categoria->setLabel('Categoria');
+$fieldset1->add($categoria);
 
 $formCadastro->add($fieldset1);
 
-$fieldset2 = new \CODE\Form\Elements\Fieldset('field2', 'Informações de Acesso');
-
-$login = new CODE\Form\Elements\Text('login');
-$login->setLabel('Login');
-$fieldset2->add($login);
-
-$pass = new CODE\Form\Elements\Password('senha');
-$pass->setLabel('Senha');
-$fieldset2->add($pass);
-
-$formCadastro->add($fieldset2);
 
 $submit = new CODE\Form\Elements\Submit('enviar', 'Enviar');
 $formCadastro->add($submit);
 
 
+$dados = [
+            "nome"=>"",
+            "descricao"=>"Lorem Ipsum ...",
+            "valor" => 'a12.99',
+        ];
+
+$formCadastro->populate($dados);
 
 
+$formCadastro->getValidator()->addRule(
+    array(
+        'element' => $nome,
+        'rules' => array(
+            array(
+                'rule' => 'is_required'
+            )
+        )
+    )
+);
+$formCadastro->getValidator()->addRule(
+    array(
+        'element' => $valor,
+        'rules' => array(
+            array(
+                'rule' => 'is_numeric'
+            )
+        )
+    )
+);
+$formCadastro->getValidator()->addRule(
+    array(
+        'element' => $descricao,
+        'rules' => array(
+            array(
+                'rule' => 'max_length',
+                'params' => array(
+                    'max' => 200
+                )
+            )
+        )
+    )
+);
+
+$formCadastro->getValidator()->validate();
 
 ?>
 <!DOCTYPE html>
@@ -98,12 +151,14 @@ $formCadastro->add($submit);
 
     <div class="row">
         <div class="col-lg-6">
-            <h3>Form Cadastro</h3>
+            <?php if($formCadastro->getValidator()->getMessages()):?>
+            <ul>
+                <?php echo $formCadastro->getValidator()->getMessages();?>
+            </ul>
+            <?php endif;?>
             <?php echo $formCadastro->openTag();?>
 
             <?php echo $formCadastro->createField('field1');?>
-
-            <?php echo $formCadastro->createField('field2');?>
 
             <?php echo $formCadastro->createField('enviar');?>
 
